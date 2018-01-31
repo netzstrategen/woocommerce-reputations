@@ -17,6 +17,13 @@ class TrustedShops {
   const CACHE_DURATION = 43200;
 
   /**
+   * Cache expiration time for errors.
+   *
+   * @var int
+   */
+  const CACHE_DURATION_ERROR = 3600;
+
+  /**
    * Adds Trusted Shops rich snippet markup to product pages.
    *
    * @implements woocommerce_after_single_product
@@ -34,16 +41,15 @@ class TrustedShops {
     $response = wp_remote_get($api_url);
     if ($response instanceof \WP_Error) {
       trigger_error($response->get_error_message(), E_USER_ERROR);
+      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
       return;
     }
     elseif (empty($response['body']) || !($response = json_decode($response['body'], TRUE)) || empty($response = $response['response'])) {
       trigger_error('Unable to retrieve Trusted Shops data', E_USER_ERROR);
+      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
       return;
     }
     $reviewIndicator = $response['data']['shop']['qualityIndicators']['reviewIndicator'];
-    if ($reviewIndicator['activeReviewCount'] < 1) {
-      return;
-    }
     $ts_snippet = [
       '@context' => 'http://schema.org',
       '@type' => 'Organization',
