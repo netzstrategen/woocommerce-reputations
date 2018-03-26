@@ -87,17 +87,18 @@ EOD;
       $product = $item->get_product();
       $product_id = $product->get_id();
       $product_url = get_permalink($product_id);
-      $product_image = wp_get_attachment_url($product->get_data()['image_id']);
+      $product_image = has_post_thumbnail($product_id) ? wp_get_attachment_url($product->get_data()['image_id']) : '';
       $product_sku = $product->get_sku();
-      $product_gtin = get_post_meta($product_id, '_custom_gtin');
-      $product_brand = !is_wp_error($brands = wp_get_post_terms($product_id, 'product_brand', ['orderby' => 'name', 'fields' => 'names'])) ? implode(' | ', $brands) : '';
+      $product_gtin = get_post_meta($product_id, '_custom_gtin', TRUE);
+      $brands = wp_get_post_terms($product_id, 'product_brand', ['orderby' => 'name', 'fields' => 'names']);
+      $product_brand = $brands && !is_wp_error($brands) ? implode(' | ', $brands) : '';
       $text .= <<<EOD
   <span class="tsCheckoutProductItem">
     <span class="tsCheckoutProductUrl">{$product_url}</span>
     <span class="tsCheckoutProductImageUrl">{$product_image}</span>
     <span class="tsCheckoutProductName">{$item->get_name()}</span>
     <span class="tsCheckoutProductSKU">{$product_sku}</span>
-    <span class="tsCheckoutProductGTIN">{$product_gtin[0]}</span>
+    <span class="tsCheckoutProductGTIN">{$product_gtin}</span>
     <span class="tsCheckoutProductBrand">{$product_brand}</span>
   </span>
 EOD;
