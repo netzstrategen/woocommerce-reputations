@@ -82,6 +82,28 @@ class TrustedShops {
   <span id="tsCheckoutOrderAmount">{$order->get_total()}</span>
   <span id="tsCheckoutOrderCurrency">{$order->get_currency()}</span>
   <span id="tsCheckoutOrderPaymentType">{$order->get_payment_method()}</span>
+EOD;
+    foreach ($order->get_items() as $item) {
+      $product = $item->get_product();
+      $product_id = $product->get_id();
+      $product_url = get_permalink($product_id);
+      $product_image = has_post_thumbnail($product_id) ? wp_get_attachment_url($product->get_data()['image_id']) : '';
+      $product_sku = $product->get_sku();
+      $product_gtin = get_post_meta($product_id, '_custom_gtin', TRUE);
+      $brands = wp_get_post_terms($product_id, 'product_brand', ['orderby' => 'name', 'fields' => 'names']);
+      $product_brand = $brands && !is_wp_error($brands) ? implode(' | ', $brands) : '';
+      $text .= <<<EOD
+  <span class="tsCheckoutProductItem">
+    <span class="tsCheckoutProductUrl">{$product_url}</span>
+    <span class="tsCheckoutProductImageUrl">{$product_image}</span>
+    <span class="tsCheckoutProductName">{$item->get_name()}</span>
+    <span class="tsCheckoutProductSKU">{$product_sku}</span>
+    <span class="tsCheckoutProductGTIN">{$product_gtin}</span>
+    <span class="tsCheckoutProductBrand">{$product_brand}</span>
+  </span>
+EOD;
+    }
+    $text .= <<<EOD
 </span>
 EOD;
     return $text;
