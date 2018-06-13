@@ -118,6 +118,7 @@ EOD;
     if (!$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
     }
+    $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
     ?>
     <script>
       (function () {
@@ -129,7 +130,7 @@ EOD;
           'trustcardDirection': 'topRight',
           'customBadgeWidth': '40',
           'customBadgeHeight': '40',
-          'disableResponsive': 'false',
+          'disableResponsive': '<?= $disable_responsive ?>',
           'disableTrustbadge': 'false',
           'customCheckoutElementId': '<?= Plugin::PREFIX . '-trusted-shops-buyer-protection' ?>'
         };

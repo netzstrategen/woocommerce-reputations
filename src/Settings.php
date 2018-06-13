@@ -37,6 +37,12 @@ class Settings extends \WC_Integration {
         'title' => __('Trusted Shops ID', Plugin::L10N),
         'type' => 'text',
       ],
+      'trusted_shops/disable_responsive' => [
+        'title' => __('Disable responsive', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, the Trusted Shops responsive banner will be hidden on mobile devices.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
       'google/merchant_id' => [
         'title' => __('Google Merchant ID', Plugin::L10N),
         'type' => 'int',
