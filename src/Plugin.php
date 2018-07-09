@@ -44,7 +44,12 @@ class Plugin {
   public static function init() {
     add_action('woocommerce_after_single_product', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product');
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\TrustedShops::woocommerce_thankyou_order_received_text', 100, 2);
-    add_action('woocommerce_order_items_table', __NAMESPACE__ . '\TrustedShops::woocommerce_order_items_table');
+    if (WC_VERSION < '3.3.0') {
+      add_action('woocommerce_order_items_table', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
+    }
+    else {
+      add_action('woocommerce_order_details_after_order_table_items', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
+    }
     add_action('wp_footer', __NAMESPACE__ . '\TrustedShops::wp_footer');
     add_action(Plugin::PREFIX . '/badge/trusted-shops', __NAMESPACE__ . '\TrustedShops::renderBadge');
 
