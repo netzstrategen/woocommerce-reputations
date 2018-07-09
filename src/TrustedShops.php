@@ -156,9 +156,9 @@ EOD;
   /**
    * Adds trusted-shop-badge to the thank-you page.
    *
-   * @implements woocommerce_order_items_table
+   * @implements woocommerce_order_details_after_order_table_items
    */
-  public static function woocommerce_order_items_table() {
+  public static function addsTrustedShopsBuyerProtection() {
     echo '<div id="' . Plugin::PREFIX . '-trusted-shops-buyer-protection"></div>';
   }
 
