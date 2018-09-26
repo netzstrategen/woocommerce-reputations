@@ -43,6 +43,48 @@ class Settings extends \WC_Integration {
         'description' => __('If checked, the Trusted Shops responsive banner will be hidden on mobile devices.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'trusted_shops/display_product_stars' => [
+        'title' => __('Display product stars', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, Trusted Shops stars will be displayed in product pages.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/display_product_reviews' => [
+        'title' => __('Display product reviews', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, Trusted Shops reviews will be displayed in product pages.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_box_bordercolor' => [
+        'title' => __('Product reviews box border color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('Color of product review box borders.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_box_backgroundcolor' => [
+        'title' => __('Product reviews box background color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('Color of product review box background.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_comment_bordercolor' => [
+        'title' => __('Product reviews comment border color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('Color of product review comment borders.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_stars_color' => [
+        'title' => __('Product reviews stars color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('Color of product review star icons.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_box_backgroundcolor' => [
+        'title' => __('Product reviews box background color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('Color of product review box background.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
       'google/merchant_id' => [
         'title' => __('Google Merchant ID', Plugin::L10N),
         'type' => 'int',
