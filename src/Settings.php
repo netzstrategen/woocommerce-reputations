@@ -58,32 +58,22 @@ class Settings extends \WC_Integration {
       'trusted_shops/product_review_box_bordercolor' => [
         'title' => __('Product reviews box border color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product review box borders.', Plugin::L10N),
-        'desc_tip' => TRUE,
       ],
       'trusted_shops/product_review_box_backgroundcolor' => [
         'title' => __('Product reviews box background color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product review box background.', Plugin::L10N),
-        'desc_tip' => TRUE,
       ],
       'trusted_shops/product_review_comment_bordercolor' => [
         'title' => __('Product reviews comment border color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product review comment borders.', Plugin::L10N),
-        'desc_tip' => TRUE,
       ],
       'trusted_shops/product_stars_color' => [
         'title' => __('Product rating stars color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product rating star icons.', Plugin::L10N),
-        'desc_tip' => TRUE,
       ],
       'trusted_shops/product_review_box_backgroundcolor' => [
         'title' => __('Product reviews box background color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product review box background.', Plugin::L10N),
-        'desc_tip' => TRUE,
       ],
       'google/merchant_id' => [
         'title' => __('Google Merchant ID', Plugin::L10N),
