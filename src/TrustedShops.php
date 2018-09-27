@@ -24,6 +24,30 @@ class TrustedShops {
   const CACHE_DURATION_ERROR = 3600;
 
   /**
+   * Displays product rating stars after product title on product detail page.
+   *
+   * @implements woocommerce_single_product_summary
+   */
+  public static function woocommerce_single_product_summary() {
+    $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
+    if ($display_product_stars) {
+      echo '<div id="' . Plugin::PREFIX . '-trusted-shops-product-stars"></div>';
+    }
+  }
+
+  /**
+   * Displays product reviews on product detail page.
+   *
+   * @implements woocommerce_after_single_product_summary
+   */
+  public static function woocommerce_after_single_product_summary () {
+    $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
+    if ($display_product_reviews) {
+      echo '<div id="' . Plugin::PREFIX . '-trusted-shops-product-reviews"></div>';
+    }
+  }
+
+  /**
    * Adds Trusted Shops rich snippet markup to product pages.
    *
    * @implements woocommerce_after_single_product
@@ -115,10 +139,14 @@ EOD;
    * @implements wp_footer
    */
   public static function wp_footer() {
+    global $product;
+
     if (!$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
     }
     $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
+    $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
+    $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
     ?>
     <script>
       (function () {
@@ -143,7 +171,55 @@ EOD;
         __ts.parentNode.insertBefore(_ts, __ts);
       })();
     </script>
+  <?php if ($display_product_stars) { ?>
+    <script type="text/javascript" src="//widgets.trustedshops.com/reviews/tsSticker/tsProductStickerSummary.js"></script>
+    <script> 
+      var summaryBadge = new productStickerSummary();
+      summaryBadge.showSummary({
+        'tsId': '<?= $shop_id ?>',
+        'sku': ['<?= $product->get_sku() ?>'],
+        'element': '#<?= Plugin::PREFIX . "-trusted-shops-product-stars" ?>',
+        'starColor': '<?= Settings::getOption('trusted_shops/product_stars_color') ?? "#FFDC0F" ?>',
+        'starSize': '14px',
+        'fontSize': '12px',
+        'showRating': 'true',
+        'scrollToReviews': 'false',
+        'enablePlaceholder': 'false'
+      });
+    </script> 
+  <?php } ?>
+  <?php if ($display_product_reviews) { ?>
+    <script type="text/javascript">
+      _tsProductReviewsConfig = {
+        tsid: '<?= $shop_id ?>',
+        sku: ['<?= $product->get_sku() ?>'],
+        variant: 'productreviews',
+        borderColor: '<?= Settings::getOption('trusted_shops/product_review_box_bordercolor') ?? "#0DBEDC" ?>',
+        backgroundColor: '<?= Settings::getOption('trusted_shops/product_review_box_backgroundcolor') ?? "#FFFFFF" ?>',
+        locale: '<?= str_replace('_formal', '', get_user_locale()) ?>',
+        starColor: '<?= Settings::getOption('trusted_shops/product_stars_color') ?? "#FFDC0F" ?>',
+        commentBorderColor: '<?= Settings::getOption('trusted_shops/product_review_comment_bordercolor') ?? "#DAD9D5" ?>',
+        commentHideArrow: 'false',
+        richSnippets: 'on',
+        starSize: '15px',
+        ratingSummary: 'false',
+        maxHeight: '1200px',
+        hideEmptySticker: 'false',
+        filter: 'true',
+        introtext: '<?= __("What our customers say about us:", Plugin::L10N) ?>'
+      };
+      var scripts = document.getElementsByTagName('SCRIPT'),
+      me = document.getElementById('<?= Plugin::PREFIX . '-trusted-shops-product-reviews' ?>');
+      var _ts = document.createElement('SCRIPT');
+      _ts.type = 'text/javascript';
+      _ts.async = true;
+      _ts.charset = 'utf-8';
+      _ts.src ='//widgets.trustedshops.com/reviews/tsSticker/tsProductSticker.js';
+      me.appendChild(_ts);
+      _tsProductReviewsConfig.script = _ts;
+    </script>
     <?php
+    }
   }
 
   /**

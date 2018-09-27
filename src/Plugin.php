@@ -42,6 +42,10 @@ class Plugin {
    * @implements init
    */
   public static function init() {
+    // Displays product rating stars after product title on product detail page.
+    add_action('woocommerce_single_product_summary', __NAMESPACE__ . '\TrustedShops::woocommerce_single_product_summary', 6);
+    // Displays product reviews on product detail page.
+    add_action('woocommerce_after_single_product_summary', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product_summary');
     add_action('woocommerce_after_single_product', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product');
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\TrustedShops::woocommerce_thankyou_order_received_text', 100, 2);
     if (WC_VERSION < '3.3.0') {

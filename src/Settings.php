@@ -43,6 +43,38 @@ class Settings extends \WC_Integration {
         'description' => __('If checked, the Trusted Shops responsive banner will be hidden on mobile devices.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'trusted_shops/display_product_stars' => [
+        'title' => __('Display product rating stars', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, Trusted Shops rating stars will be displayed in product pages.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/display_product_reviews' => [
+        'title' => __('Display product reviews', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, Trusted Shops reviews will be displayed in product pages.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/product_review_box_bordercolor' => [
+        'title' => __('Product reviews box border color', Plugin::L10N),
+        'type' => 'color',
+      ],
+      'trusted_shops/product_review_box_backgroundcolor' => [
+        'title' => __('Product reviews box background color', Plugin::L10N),
+        'type' => 'color',
+      ],
+      'trusted_shops/product_review_comment_bordercolor' => [
+        'title' => __('Product reviews comment border color', Plugin::L10N),
+        'type' => 'color',
+      ],
+      'trusted_shops/product_stars_color' => [
+        'title' => __('Product rating stars color', Plugin::L10N),
+        'type' => 'color',
+      ],
+      'trusted_shops/product_review_box_backgroundcolor' => [
+        'title' => __('Product reviews box background color', Plugin::L10N),
+        'type' => 'color',
+      ],
       'google/merchant_id' => [
         'title' => __('Google Merchant ID', Plugin::L10N),
         'type' => 'int',
