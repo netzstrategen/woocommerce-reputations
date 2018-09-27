@@ -44,9 +44,9 @@ class Settings extends \WC_Integration {
         'desc_tip' => TRUE,
       ],
       'trusted_shops/display_product_stars' => [
-        'title' => __('Display product stars', Plugin::L10N),
+        'title' => __('Display product rating stars', Plugin::L10N),
         'type' => 'checkbox',
-        'description' => __('If checked, Trusted Shops stars will be displayed in product pages.', Plugin::L10N),
+        'description' => __('If checked, Trusted Shops rating stars will be displayed in product pages.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
       'trusted_shops/display_product_reviews' => [
@@ -73,10 +73,10 @@ class Settings extends \WC_Integration {
         'description' => __('Color of product review comment borders.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
-      'trusted_shops/product_review_stars_color' => [
-        'title' => __('Product reviews stars color', Plugin::L10N),
+      'trusted_shops/product_stars_color' => [
+        'title' => __('Product rating stars color', Plugin::L10N),
         'type' => 'color',
-        'description' => __('Color of product review star icons.', Plugin::L10N),
+        'description' => __('Color of product rating star icons.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
       'trusted_shops/product_review_box_backgroundcolor' => [

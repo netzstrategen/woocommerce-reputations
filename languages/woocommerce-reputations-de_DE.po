@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: woocommerce-reputations\n"
-"POT-Creation-Date: 2018-09-26 18:51+0200\n"
-"PO-Revision-Date: 2018-09-26 18:52+0200\n"
+"POT-Creation-Date: 2018-09-27 09:13+0200\n"
+"PO-Revision-Date: 2018-09-27 09:14+0200\n"
 "Last-Translator: Joan López <joan@netzstrategen.com>\n"
 "Language-Team: netzstrategen\n"
 "Language: de_DE\n"
@@ -27,7 +27,7 @@ msgstr "Bewertungen"
 
 #: src/Settings.php:37
 msgid "Trusted Shops ID"
-msgstr ""
+msgstr "Trusted Shops ID"
 
 #: src/Settings.php:41
 msgid "Disable responsive"
@@ -42,32 +42,21 @@ msgstr ""
 "angezeigt."
 
 #: src/Settings.php:47
-msgid "Display product stars"
+msgid "Display product rating stars"
 msgstr ""
 
 #: src/Settings.php:49
-#, fuzzy
-#| msgid ""
-#| "If checked, the Trusted Shops responsive banner will be hidden on mobile "
-#| "devices."
-msgid "If checked, Trusted Shops stars will be displayed in product pages."
+msgid ""
+"If checked, Trusted Shops rating stars will be displayed in product pages."
 msgstr ""
-"Wenn aktiviert, wird das Trusted Shops Banner auf mobilen Geräten nicht "
-"angezeigt."
 
 #: src/Settings.php:53
 msgid "Display product reviews"
 msgstr ""
 
 #: src/Settings.php:55
-#, fuzzy
-#| msgid ""
-#| "If checked, the Trusted Shops responsive banner will be hidden on mobile "
-#| "devices."
 msgid "If checked, Trusted Shops reviews will be displayed in product pages."
 msgstr ""
-"Wenn aktiviert, wird das Trusted Shops Banner auf mobilen Geräten nicht "
-"angezeigt."
 
 #: src/Settings.php:59
 msgid "Product reviews box border color"
@@ -94,16 +83,16 @@ msgid "Color of product review comment borders."
 msgstr ""
 
 #: src/Settings.php:77
-msgid "Product reviews stars color"
+msgid "Product rating stars color"
 msgstr ""
 
 #: src/Settings.php:79
-msgid "Color of product review star icons."
+msgid "Color of product rating star icons."
 msgstr ""
 
 #: src/Settings.php:89
 msgid "Google Merchant ID"
-msgstr ""
+msgstr "Google Merchant ID"
 
 #: src/Settings.php:93
 msgid "Delivery time"
