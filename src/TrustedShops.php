@@ -177,17 +177,26 @@ EOD;
     $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
     $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
 
-    $product_sku = [];
+    $products_sku = [];
     if ($product->get_type() === 'variable') {
       $variations = $product->get_available_variations();
       foreach ($variations as $variation) {
-        $product_sku[] = $variation['sku'] ?? '';
+        $products_sku[] = $variation['sku'] ?? '';
       }
     }
     else {
-      $product_sku[] = $product->get_sku() ?? '';
+      $products_sku[] = $product->get_sku() ?? '';
     }
-    $sku_list = "['" . implode("','", $product_sku) . "']";
+
+    $products_sku = array_filter($products_sku, function ($sku) {
+      return !empty($sku);
+    });
+
+    if (!count($products_sku)) {
+      return;
+    }
+
+    $sku_list = "['" . implode("','", $products_sku) . "']";
   ?>
   <?php if ($display_product_stars) { ?>
     <script type="text/javascript" src="//widgets.trustedshops.com/reviews/tsSticker/tsProductStickerSummary.js"></script>
