@@ -145,13 +145,6 @@ EOD;
       return;
     }
     $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
-    $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
-    $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
-
-    if (!is_product() || !$product_sku = $product->get_sku()) {
-      $display_product_stars = FALSE;
-      $display_product_reviews = FALSE;
-    }
     ?>
     <script>
       (function () {
@@ -176,13 +169,42 @@ EOD;
         __ts.parentNode.insertBefore(_ts, __ts);
       })();
     </script>
+  <?php
+    if (!is_product()) {
+      return;
+    }
+
+    $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
+    $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
+
+    $products_sku = [];
+    if ($product->get_type() === 'variable') {
+      $variations = $product->get_available_variations();
+      foreach ($variations as $variation) {
+        $products_sku[] = $variation['sku'] ?? '';
+      }
+    }
+    else {
+      $products_sku[] = $product->get_sku() ?? '';
+    }
+
+    $products_sku = array_filter($products_sku, function ($sku) {
+      return !empty($sku);
+    });
+
+    if (!count($products_sku)) {
+      return;
+    }
+
+    $sku_list = "['" . implode("','", $products_sku) . "']";
+  ?>
   <?php if ($display_product_stars) { ?>
     <script type="text/javascript" src="//widgets.trustedshops.com/reviews/tsSticker/tsProductStickerSummary.js"></script>
     <script>
       var summaryBadge = new productStickerSummary();
       summaryBadge.showSummary({
         'tsId': '<?= $shop_id ?>',
-        'sku': ['<?= $product_sku ?>'],
+        'sku': <?= $sku_list ?>,
         'element': '#<?= Plugin::PREFIX . "-trusted-shops-product-stars" ?>',
         'starColor': '<?= Settings::getOption('trusted_shops/product_stars_color') ?? "#FFDC0F" ?>',
         'starSize': '14px',
@@ -197,7 +219,7 @@ EOD;
     <script type="text/javascript">
       _tsProductReviewsConfig = {
         tsid: '<?= $shop_id ?>',
-        sku: ['<?= $product_sku ?>'],
+        sku: <?= $sku_list ?>,
         variant: 'productreviews',
         borderColor: '<?= Settings::getOption('trusted_shops/product_review_box_bordercolor') ?? "#0DBEDC" ?>',
         backgroundColor: '<?= Settings::getOption('trusted_shops/product_review_box_backgroundcolor') ?? "#FFFFFF" ?>',
