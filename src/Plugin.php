@@ -72,7 +72,7 @@ class Plugin {
     $git_version = static::getGitVersion();
 
     if (is_product()) {
-      wp_enqueue_script(static::PREFIX, Plugin::getBaseUrl() . '/dist/scripts/main.js', ['jquery'], $git_version, TRUE);
+      wp_enqueue_script(static::PREFIX, Plugin::getBaseUrl() . '/dist/scripts/main.min.js', ['jquery'], $git_version, TRUE);
     }
   }
 
