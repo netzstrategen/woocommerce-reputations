@@ -99,9 +99,18 @@ class TrustedShops {
     if (empty($order)) {
       return $text;
     }
+
+    // Use custom order number if custom-order-numbers-for-woocommerce plugin is active.
+    if (class_exists('Alg_WC_Custom_Order_Numbers_Core')) {
+      $order_id = get_post_meta($order->get_id(), '_alg_wc_custom_order_number', TRUE) ?: $order->get_id();
+    }
+    else {
+      $order_id = $order->get_id();
+    }
+
     $text .= <<<EOD
 <span id="trustedShopsCheckout" style="display: none;">
-  <span id="tsCheckoutOrderNr">{$order->get_id()}</span>
+  <span id="tsCheckoutOrderNr">{$order_id}</span>
   <span id="tsCheckoutBuyerEmail">{$order->get_billing_email()}</span>
   <span id="tsCheckoutOrderAmount">{$order->get_total()}</span>
   <span id="tsCheckoutOrderCurrency">{$order->get_currency()}</span>
