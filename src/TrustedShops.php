@@ -21,7 +21,7 @@ class TrustedShops {
    *
    * @var int
    */
-  const CACHE_DURATION_ERROR = 3600;
+  const CACHE_DURATION_ERROR = 300;
 
   /**
    * Displays product rating stars after product title on product detail page.
@@ -64,12 +64,12 @@ class TrustedShops {
     $api_url = 'http://api.trustedshops.com/rest/public/v2/shops/' . $shop_id . '/quality/reviews.json';
     $response = wp_remote_get($api_url);
     if ($response instanceof \WP_Error) {
-      trigger_error($response->get_error_message(), E_USER_ERROR);
+      trigger_error($response->get_error_message(), E_USER_WARNING);
       set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
       return;
     }
     elseif (empty($response['body']) || !($response = json_decode($response['body'], TRUE)) || empty($response = $response['response'])) {
-      trigger_error('Unable to retrieve Trusted Shops data', E_USER_ERROR);
+      trigger_error('Unable to retrieve Trusted Shops data', E_USER_WARNING);
       set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
       return;
     }
