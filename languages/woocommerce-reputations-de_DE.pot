@@ -2,13 +2,13 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: woocommerce-reputations\n"
-"POT-Creation-Date: 2018-09-27 17:43+0200\n"
+"POT-Creation-Date: 2019-08-29 12:16+0200\n"
 "PO-Revision-Date: 2015-06-18 14:18+0100\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.1.1\n"
+"X-Generator: Poedit 2.2.3\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;_n_noop:1,2;_c,_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
@@ -28,57 +28,69 @@ msgid "Trusted Shops ID"
 msgstr ""
 
 #: src/Settings.php:41
-msgid "Disable responsive"
+msgid "Offset from page bottom"
 msgstr ""
 
-#: src/Settings.php:43
-msgid "If checked, the Trusted Shops responsive banner will be hidden on mobile devices."
-msgstr ""
-
-#: src/Settings.php:47
-msgid "Display product rating stars"
-msgstr ""
-
-#: src/Settings.php:49
-msgid "If checked, Trusted Shops rating stars will be displayed in product pages."
+#: src/Settings.php:45
+msgid "Variant"
 msgstr ""
 
 #: src/Settings.php:53
-msgid "Display product reviews"
+msgid "Defines the badge position."
 msgstr ""
 
-#: src/Settings.php:55
-msgid "If checked, Trusted Shops reviews will be displayed in product pages."
+#: src/Settings.php:57
+msgid "Disable responsive"
 msgstr ""
 
 #: src/Settings.php:59
-msgid "Product reviews box border color"
+msgid "If checked, the Trusted Shops responsive banner will be hidden on mobile devices."
 msgstr ""
 
-#: src/Settings.php:63 src/Settings.php:75
-msgid "Product reviews box background color"
+#: src/Settings.php:63
+msgid "Display product rating stars"
 msgstr ""
 
-#: src/Settings.php:67
-msgid "Product reviews comment border color"
+#: src/Settings.php:65
+msgid "If checked, Trusted Shops rating stars will be displayed in product pages."
+msgstr ""
+
+#: src/Settings.php:69
+msgid "Display product reviews"
 msgstr ""
 
 #: src/Settings.php:71
-msgid "Product rating stars color"
+msgid "If checked, Trusted Shops reviews will be displayed in product pages."
 msgstr ""
 
-#: src/Settings.php:79
-msgid "Google Merchant ID"
+#: src/Settings.php:75
+msgid "Product reviews box border color"
+msgstr ""
+
+#: src/Settings.php:79 src/Settings.php:91
+msgid "Product reviews box background color"
 msgstr ""
 
 #: src/Settings.php:83
+msgid "Product reviews comment border color"
+msgstr ""
+
+#: src/Settings.php:87
+msgid "Product rating stars color"
+msgstr ""
+
+#: src/Settings.php:95
+msgid "Google Merchant ID"
+msgstr ""
+
+#: src/Settings.php:99
 msgid "Delivery time"
 msgstr ""
 
-#: src/Settings.php:85
+#: src/Settings.php:101
 msgid "The delivery time will be added to the order date to calculate the estimated delivery data needed for Google Trusted Stores integrations."
 msgstr ""
 
-#: src/TrustedShops.php:209
+#: src/TrustedShops.php:247
 msgid "What our customers say about us:"
 msgstr ""
