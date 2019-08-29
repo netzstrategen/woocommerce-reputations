@@ -37,6 +37,22 @@ class Settings extends \WC_Integration {
         'title' => __('Trusted Shops ID', Plugin::L10N),
         'type' => 'text',
       ],
+      'trusted_shops/yOffset' => [
+        'title' => __('Offset from page bottom', Plugin::L10N),
+        'type' => 'text',
+      ],
+      'trusted_shops/variant' => [
+        'title' => __('Variant', Plugin::L10N),
+        'type' => 'select',
+        'options' => [
+          'default' => 'default',
+          'reviews' => 'reviews',
+          'custom' => 'custom',
+          'custom_reviews' => 'custom_reviews',
+        ],
+        'description' => __('Defines the badge position.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
       'trusted_shops/disable_responsive' => [
         'title' => __('Disable responsive', Plugin::L10N),
         'type' => 'checkbox',
