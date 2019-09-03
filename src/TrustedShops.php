@@ -154,13 +154,15 @@ EOD;
       return;
     }
     $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
+    $yOffset = Settings::getOption('trusted_shops/yOffset') ?? '0';
+    $variant = Settings::getOption('trusted_shops/variant') ?? 'custom';
     ?>
     <script>
       (function () {
         var _tsid = '<?= $shop_id ?>';
         _tsConfig = {
-          'yOffset': '0',
-          'variant': 'custom',
+          'yOffset': '<?= $yOffset ?>',
+          'variant': '<?= $variant ?>',
           'customElementId': '<?= Plugin::PREFIX . '-trusted-shops-badge' ?>',
           'trustcardDirection': 'topRight',
           'customBadgeWidth': '40',
