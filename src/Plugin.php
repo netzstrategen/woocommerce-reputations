@@ -39,9 +39,20 @@ class Plugin {
   }
 
   /**
+   * @implements admin_init
+   */
+  public static function admin_init() {
+    // Adds former SKUs field to woocommerce product backend inventory tab.
+    add_action('woocommerce_product_options_sku', __NAMESPACE__ . '\TrustedShops::woocommerce_product_options_sku');
+  }
+
+  /**
    * @implements init
    */
   public static function init() {
+    // Saves custom fields for simple products.
+    add_action('woocommerce_process_product_meta', __NAMESPACE__ . '\TrustedShops::woocommerce_process_product_meta');
+
     // Enqueue Trusted Shops product reviews related scripts.
     add_action('wp_enqueue_scripts', __CLASS__ . '::enqueueProductReviewsScripts');
 

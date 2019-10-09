@@ -24,6 +24,41 @@ class TrustedShops {
   const CACHE_DURATION_ERROR = 300;
 
   /**
+   * Adds former SKUs field to woocommerce product backend inventory tab.
+   *
+   * In some cases the SKUs of the product changes during the time.
+   * TrustedShop only retrieves product reviews related to the current SKUs.
+   * We are adding a "Former SKUs" to ensure TrustedShop retrieves all
+   * available product reviews.
+   *
+   * @implements woocommerce_product_options_sku
+   */
+  public static function woocommerce_product_options_sku() {
+    woocommerce_wp_text_input([
+      'id' => '_' . Plugin::PREFIX . '_former_skus',
+      'label' => __('Former SKUs', Plugin::L10N),
+      'desc_tip' => 'true',
+      'description' => __('Insert a coma separated list of former SKUs to ensure TrustedShop retrieves all available product reviews.', Plugin::L10N),
+    ]);
+  }
+
+  /**
+   * Saves custom fields for simple products.
+   *
+   * @implements woocommerce_process_product_meta
+   */
+  public static function woocommerce_process_product_meta($post_id) {
+    if (isset($_POST['_' . Plugin::PREFIX . '_former_skus'])) {
+      if (!is_array($_POST['_' . Plugin::PREFIX . '_former_skus']) && $_POST['_' . Plugin::PREFIX . '_former_skus']) {
+        update_post_meta($post_id, '_' . Plugin::PREFIX . '_former_skus', $_POST['_' . Plugin::PREFIX . '_former_skus']);
+      }
+      else {
+        delete_post_meta($post_id, '_' . Plugin::PREFIX . '_former_skus');
+      }
+    }
+  }
+
+  /**
    * Displays product rating stars after product title on product detail page.
    *
    * @implements woocommerce_single_product_summary
@@ -197,6 +232,10 @@ EOD;
     }
     else {
       $products_sku[] = $product->get_sku() ?? '';
+    }
+
+    if ($former_sku = get_post_meta($product->get_id(), '_' . Plugin::PREFIX . '_former_skus', TRUE)) {
+      $products_sku[] = $former_sku;
     }
 
     $products_sku = array_filter($products_sku, function ($sku) {
