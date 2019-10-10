@@ -235,7 +235,8 @@ EOD;
     }
 
     if ($former_sku = get_post_meta($product->get_id(), '_' . Plugin::PREFIX . '_former_skus', TRUE)) {
-      $products_sku[] = $former_sku;
+      $former_sku = str_replace(' ', '', $former_sku);
+      $products_sku = array_merge($products_sku, explode(',', $former_sku));
     }
 
     $products_sku = array_filter($products_sku, function ($sku) {
