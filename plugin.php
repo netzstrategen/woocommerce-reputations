@@ -3,7 +3,7 @@
 /*
   Plugin Name: WooCommerce Reputations
   Plugin URI: https://github.com/netzstrategen/woocommerce-reputations
-  Version: 1.4.0
+  Version: 1.5.0
   Text Domain: woocommerce-reputations
   Description: Integrate Trusted Shops and Google Trusted Stores into WooCommerce.
   Author: netzstrategen
@@ -35,4 +35,5 @@ spl_autoload_register(__NAMESPACE__ . '\classloader');
 
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::loadTextdomain');
 add_action('plugins_loaded', __NAMESPACE__ . '\Plugin::plugins_loaded');
+add_action('admin_init', __NAMESPACE__ . '\Plugin::admin_init');
 add_action('init', __NAMESPACE__ . '\Plugin::init');
