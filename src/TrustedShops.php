@@ -225,10 +225,18 @@ EOD;
 
     $products_sku = [];
     if ($product->get_type() === 'variable') {
-      $variations = $product->get_available_variations();
-      foreach ($variations as $variation) {
-        $products_sku[] = $variation['sku'] ?? '';
-      }
+      // Gets variations skus, avoiding "get_available_variations()".
+      global $wpdb;
+      $variation_ids = $product->get_visible_children();
+      $placeholders = implode(',', array_fill(0, count($variation_ids), '%d'));
+      $products_sku = $wpdb->get_col($wpdb->prepare(
+        "SELECT pm.meta_value AS attachment_id
+        FROM wp_posts p
+        INNER JOIN wp_postmeta pm ON pm.post_id = p.ID AND pm.meta_key = '_sku'
+        WHERE p.ID IN ($placeholders)",
+        $variation_ids
+      ));
+      error_log(print_r(count($variation_ids), TRUE));
     }
     else {
       $products_sku[] = $product->get_sku() ?? '';
