@@ -183,7 +183,7 @@ EOD;
    * @implements wp_footer
    */
   public static function wp_footer() {
-    global $product;
+    global $product, $wpdb;
 
     if (!$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
@@ -225,19 +225,15 @@ EOD;
 
     $products_sku = [];
     if ($product->get_type() === 'variable') {
-      // Gets variations skus, avoiding "get_available_variations()".
-      global $wpdb;
+      // Avoid WC_Product_Variable::get_available_variations() as it
+      // additionally produces a lot of output for templates, unnecessary here.
       $variation_ids = $product->get_visible_children();
       $placeholders = implode(',', array_fill(0, count($variation_ids), '%d'));
-      $products_sku = $wpdb->get_col(
-        $wpdb->prepare(
-          "SELECT pm.meta_value AS attachment_id
-          FROM wp_posts p
-          INNER JOIN wp_postmeta pm ON pm.post_id = p.ID AND pm.meta_key = '_sku'
-          WHERE p.ID IN ($placeholders)",
-          $variation_ids
-        )
-      );
+      $products_sku = $wpdb->get_col($wpdb->prepare("
+        SELECT pm.meta_value AS sku
+        FROM wp_postmeta pm
+        WHERE pm.post_id IN ($placeholders) AND pm.meta_key = '_sku'
+      ", $variation_ids));
     }
     else {
       $products_sku[] = $product->get_sku() ?? '';
