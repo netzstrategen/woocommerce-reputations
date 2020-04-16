@@ -112,6 +112,7 @@ class TrustedShops {
     $ts_snippet = [
       '@context' => 'http://schema.org',
       '@type' => 'Organization',
+      "@id" => get_home_url() . '/#organization',
       'name' => $response['data']['shop']['name'],
       'aggregateRating' => [
         '@type' => 'AggregateRating',
