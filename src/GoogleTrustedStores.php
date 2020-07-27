@@ -21,13 +21,25 @@ class GoogleTrustedStores {
       return $text;
     }
     $delivery_date = date('Y-m-d', strtotime($order->get_date_created()->date('c') . ' + ' . $delivery_time . ' days'));
+
+    $product_gtins = [];
+    foreach ($order->get_items() as $item) {
+      $product_sku = $item->get_product($item->get_product_id())->get_sku();
+      $product_gtin = get_post_meta($item->get_product_id(), '_custom_gtin', TRUE);
+      $product_gtins[] = [
+        'gtin' => !empty($product_gtin) ? $product_gtin :  $product_sku,
+      ];
+    }
+
     $js_snippet = [
       'merchant_id' => $merchant_id,
       'order_id' => $order->get_id(),
       'email' => $order->get_billing_email(),
       'delivery_country' => $order->get_shipping_country(),
       'estimated_delivery_date' => $delivery_date,
+      'products' => $product_gtins,
     ];
+
     $json_output = json_encode($js_snippet);
     $text .= <<<EOD
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer></script>
