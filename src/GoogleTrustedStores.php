@@ -24,11 +24,12 @@ class GoogleTrustedStores {
 
     $product_gtins = [];
     foreach ($order->get_items() as $item) {
-      $product_sku = $item->get_product($item->get_product_id())->get_sku();
-      $product_gtin = get_post_meta($item->get_product_id(), '_custom_gtin', TRUE);
-      $product_gtins[] = [
-        'gtin' => !empty($product_gtin) ? $product_gtin :  $product_sku,
-      ];
+      $product_gtin = get_post_meta($item->get_product_id(), '_shop-standards_gtin', TRUE);
+      if (!empty($product_gtin)) {
+        $product_gtins[] = [
+          'gtin' => $product_gtin,
+        ];
+      }
     }
 
     $js_snippet = [
@@ -37,10 +38,14 @@ class GoogleTrustedStores {
       'email' => $order->get_billing_email(),
       'delivery_country' => $order->get_shipping_country(),
       'estimated_delivery_date' => $delivery_date,
-      'products' => $product_gtins,
     ];
 
+    if (!empty($product_gtins)) {
+      $js_snippet['products'] = $product_gtins;
+    }
+
     $json_output = json_encode($js_snippet);
+
     $text .= <<<EOD
 <script src="https://apis.google.com/js/platform.js?onload=renderOptIn" async defer></script>
 <script>
