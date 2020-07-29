@@ -1,5 +1,5 @@
 {
-  "version": "1.5.2",
+  "version": "1.6.0",
   "title": "woocommerce-reputations",
   "description": "Integrate Trusted Shops and Google Trusted Stores into WooCommerce.",
   "dependencies": {
