@@ -145,7 +145,7 @@ class TrustedShops {
     }
 
     $text .= <<<EOD
-<span id="trustedShopsCheckout" style="display: none;">
+<div id="trustedShopsCheckout" style="display: none;">
   <span id="tsCheckoutOrderNr">{$order_id}</span>
   <span id="tsCheckoutBuyerEmail">{$order->get_billing_email()}</span>
   <span id="tsCheckoutOrderAmount">{$order->get_total()}</span>
@@ -173,7 +173,7 @@ EOD;
 EOD;
     }
     $text .= <<<EOD
-</span>
+</div>
 EOD;
     return $text;
   }
