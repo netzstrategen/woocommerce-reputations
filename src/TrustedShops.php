@@ -287,7 +287,7 @@ EOD;
         richSnippets: 'on',
         starSize: '15px',
         ratingSummary: 'false',
-        maxHeight: '1200px',
+        maxHeight: "<?= defined('TRUSTED_SHOPS_PRODUCT_REVIEWS_LIST_MAX_HEIGHT') ? TRUSTED_SHOPS_PRODUCT_REVIEWS_LIST_MAX_HEIGHT : '400px' ?>",
         hideEmptySticker: 'false',
         filter: 'true',
         introtext: '<?= __("What our customers say about us:", Plugin::L10N) ?>'
