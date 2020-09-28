@@ -27,5 +27,7 @@
     return observer.observe($reviewsBox[0], { childList: true });
   }
 
-  observeProductReviewsBox();
+  if ($reviewsBox.length) {
+    observeProductReviewsBox();
+  }
 }(jQuery));
