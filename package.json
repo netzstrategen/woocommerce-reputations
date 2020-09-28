@@ -3,7 +3,7 @@
   "title": "woocommerce-reputations",
   "description": "Integrate Trusted Shops and Google Trusted Stores into WooCommerce.",
   "dependencies": {
-    "@netzstrategen/gulp-task-collection": "^1.0.3"
+    "@netzstrategen/gulp-task-collection": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^4.19.1",
