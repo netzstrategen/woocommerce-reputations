@@ -189,6 +189,17 @@ EOD;
     if (!$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
     }
+
+    if (
+      (
+        Settings::getOption('trusted_shops/static_image_active') === 'yes' &&
+        Settings::getOption('trusted_shops/static_image')
+      ) &&
+      (!is_product() || !is_wc_endpoint_url('order-received'))
+    ) {
+      return;
+    }
+
     $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
     $yOffset = Settings::getOption('trusted_shops/yOffset') ?? '0';
     $variant = Settings::getOption('trusted_shops/variant') ?? 'custom';
@@ -217,6 +228,7 @@ EOD;
       })();
     </script>
   <?php
+
     if (!is_product()) {
       return;
     }
@@ -310,7 +322,19 @@ EOD;
    * Renders Trusted Shops Badge.
    */
   public static function renderBadge() {
-    echo '<div id="' . Plugin::PREFIX . '-trusted-shops-badge"></div>';
+    $badge = '';
+    if (
+      (!is_product() && !is_wc_endpoint_url('order-received')) &&
+      Settings::getOption('trusted_shops/static_image_active') === 'yes' &&
+      $badgeImage = Settings::getOption('trusted_shops/static_image')
+    ) {
+      $badge = '<a href="' . Settings::getOption('trusted_shops/static_image_url') . '" target="_blank">';
+      $badge .= '<img src="' . $badgeImage . '" alt="Trusted Shop Trustmark">';
+      $badge .= '</a>';
+    }
+
+    echo '<div id="' . Plugin::PREFIX . '-trusted-shops-badge">' . $badge . '</div>';
+
   }
 
   /**
