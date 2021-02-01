@@ -53,6 +53,24 @@ class Settings extends \WC_Integration {
         'description' => __('Defines the badge position.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'trusted_shops/static_image_active' => [
+        'title' => __('Use static image instead of JavaScript?', Plugin::L10N),
+        'type' => 'checkbox',
+        'description' => __('If checked, a simple image (see Static Image URL field) will be displayed, instead of the Trusted Shops JavaScript implementation.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/static_image_url' => [
+        'title' => __('Static Image URL', Plugin::L10N),
+        'type' => 'text',
+        'description' => __('The Trusted Shop badge URL.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/static_image' => [
+        'title' => __('Static Image', Plugin::L10N),
+        'type' => 'text',
+        'description' => __('The Trusted Shop badge image.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
       'trusted_shops/disable_responsive' => [
         'title' => __('Disable responsive', Plugin::L10N),
         'type' => 'checkbox',
