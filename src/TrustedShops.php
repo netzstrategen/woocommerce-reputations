@@ -195,7 +195,7 @@ EOD;
         Settings::getOption('trusted_shops/static_image_active') === 'yes' &&
         Settings::getOption('trusted_shops/static_image')
       ) &&
-      (!is_product() || !is_wc_endpoint_url('order-received'))
+      (!is_product() && !is_wc_endpoint_url('order-received'))
     ) {
       return;
     }
