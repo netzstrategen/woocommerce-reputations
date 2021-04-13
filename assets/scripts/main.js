@@ -30,4 +30,38 @@
   if ($reviewsBox.length) {
     observeProductReviewsBox();
   }
+
+  /**
+   * Adds @ID to Trusted Shops structured data type AggregateRating.
+   *
+   * Waits for the presence of the DOM element #trustedshops-productreviews-sticker-wrapper
+   * which is added by Trusted Shops via JavaScript.
+   *
+   * @param {string} selector The DOM element that must be waited for.
+   * @return {string} When DOM element is available.
+   */
+  function waitForElm(selector) {
+    return new Promise((resolve) => {
+      if (document.querySelector(selector)) {
+        return resolve(document.querySelector(selector));
+      }
+      const observer = new MutationObserver(() => {
+        if (document.querySelector(selector)) {
+          resolve(document.querySelector(selector));
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true,
+      });
+    });
+  }
+
+  waitForElm('#trustedshops-productreviews-sticker-wrapper').then(() => {
+    const TargetScripts = document.querySelectorAll('head > script[type="application/ld+json"]');
+    TargetScripts.forEach((TargetScript) => {
+      TargetScript.innerText = TargetScript.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
+    });
+  });
 }(jQuery));
