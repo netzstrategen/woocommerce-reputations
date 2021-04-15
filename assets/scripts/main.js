@@ -61,7 +61,9 @@
   waitForElm('#trustedshops-productreviews-sticker-wrapper').then(() => {
     const TargetScripts = document.querySelectorAll('head > script[type="application/ld+json"]');
     TargetScripts.forEach((TargetScript) => {
-      TargetScript.innerText = TargetScript.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
+      if (!TargetScript.innerText.includes('"@id":')) {
+        TargetScript.innerText = TargetScript.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
+      }
     });
   });
 }(jQuery));
