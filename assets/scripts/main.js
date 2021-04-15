@@ -62,10 +62,10 @@
   }
 
   waitForElement('#trustedshops-productreviews-sticker-wrapper').then(() => {
-    const TargetScripts = document.querySelectorAll('head > script[type="application/ld+json"]');
-    TargetScripts.forEach((TargetScript) => {
-      if (!TargetScript.innerText.includes('@id')) {
-        TargetScript.innerText = TargetScript.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
+    const scripts = document.querySelectorAll('head > script[type="application/ld+json"]');
+    scripts.forEach((script) => {
+      if (!script.innerText.includes('@id')) {
+        script.innerText = script.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
       }
     });
   });
