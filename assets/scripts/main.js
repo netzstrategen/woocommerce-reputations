@@ -65,7 +65,7 @@
     const scripts = document.querySelectorAll('head > script[type="application/ld+json"]');
     scripts.forEach((script) => {
       if (!script.innerText.includes('@id')) {
-        script.innerText = script.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
+        script.innerText = script.innerText.replace(',"@type":"Product","name"', `,"@id":"${window.location.protocol}//${window.location.host}${window.location.pathname}#product","@type":"Product","name"`);
       }
     });
   });
