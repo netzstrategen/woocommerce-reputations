@@ -32,15 +32,17 @@
   }
 
   /**
-   * Adds @ID to Trusted Shops structured data type AggregateRating.
+   * Fixes a missing '@id' of the product in the AggregateRating schema.org data injected by Trusted Shops.
    *
-   * Waits for the presence of the DOM element #trustedshops-productreviews-sticker-wrapper
-   * which is added by Trusted Shops via JavaScript.
+   * Waits for the presence of the element #trustedshops-productreviews-sticker-wrapper
+   * in the body, which is added by the Trusted Shops via JavaScript.
    *
-   * @param {string} selector The DOM element that must be waited for.
-   * @return {string} When DOM element is available.
+   * The schema.org script element itself is added to the HTML head by the Trusted Shops JavaScript.
+   *
+   * @param {string} selector The DOM element to wait for.
+   * @return {string} The DOM element when it is available.
    */
-  function waitForElm(selector) {
+  function waitForElement(selector) {
     return new Promise((resolve) => {
       if (document.querySelector(selector)) {
         return resolve(document.querySelector(selector));
@@ -58,7 +60,7 @@
     });
   }
 
-  waitForElm('#trustedshops-productreviews-sticker-wrapper').then(() => {
+  waitForElement('#trustedshops-productreviews-sticker-wrapper').then(() => {
     const TargetScripts = document.querySelectorAll('head > script[type="application/ld+json"]');
     TargetScripts.forEach((TargetScript) => {
       if (!TargetScript.innerText.includes('"@id":')) {
