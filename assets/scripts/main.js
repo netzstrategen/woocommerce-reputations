@@ -32,7 +32,8 @@
   }
 
   /**
-   * Fixes a missing '@id' of the product in the AggregateRating schema.org data injected by Trusted Shops.
+   * Fixes a missing '@id' of the product in the AggregateRating schema.org data
+   * injected by Trusted Shops.
    *
    * Waits for the presence of the element #trustedshops-productreviews-sticker-wrapper
    * in the body, which is added by the Trusted Shops via JavaScript.
@@ -63,7 +64,7 @@
   waitForElement('#trustedshops-productreviews-sticker-wrapper').then(() => {
     const TargetScripts = document.querySelectorAll('head > script[type="application/ld+json"]');
     TargetScripts.forEach((TargetScript) => {
-      if (!TargetScript.innerText.includes('"@id":')) {
+      if (!TargetScript.innerText.includes('@id')) {
         TargetScript.innerText = TargetScript.innerText.replace(',"@type":"Product","name"', `,"@id":"${location.protocol}//${location.host}${location.pathname}#product","@type":"Product","name"`);
       }
     });
