@@ -32,4 +32,45 @@
   if ($reviewsBox.length) {
     observeProductReviewsBox();
   }
+  /**
+   * Fixes a missing '@id' of the product in the AggregateRating schema.org data
+   * injected by Trusted Shops.
+   *
+   * Waits for the presence of the element #trustedshops-productreviews-sticker-wrapper
+   * in the body, which is added by the Trusted Shops via JavaScript.
+   *
+   * The schema.org script element itself is added to the HTML head by the Trusted Shops JavaScript.
+   *
+   * @param {string} selector The DOM element to wait for.
+   * @return {string} The DOM element when it is available.
+   */
+
+
+  function waitForElement(selector) {
+    return new Promise(function (resolve) {
+      if (document.querySelector(selector)) {
+        return resolve(document.querySelector(selector));
+      }
+
+      var observer = new MutationObserver(function () {
+        if (document.querySelector(selector)) {
+          resolve(document.querySelector(selector));
+          observer.disconnect();
+        }
+      });
+      observer.observe(document.body, {
+        childList: true,
+        subtree: true
+      });
+    });
+  }
+
+  waitForElement('#trustedshops-productreviews-sticker-wrapper').then(function () {
+    var scripts = document.querySelectorAll('head > script[type="application/ld+json"]');
+    scripts.forEach(function (script) {
+      if (!script.innerText.includes('@id')) {
+        script.innerText = script.innerText.replace(',"@type":"Product","name"', ",\"@id\":\"".concat(window.location.protocol, "//").concat(window.location.host).concat(window.location.pathname, "#product\",\"@type\":\"Product\",\"name\""));
+      }
+    });
+  });
 })(jQuery);
