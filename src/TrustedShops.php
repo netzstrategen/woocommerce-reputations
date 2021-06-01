@@ -200,7 +200,7 @@ EOD;
       return;
     }
 
-    $disable_responsive = Settings::getOption('trusted_shops/disable_responsive') === 'yes' ? TRUE : FALSE;
+    $disable_all_devices = Settings::getOption('trusted_shops/disable_all_devices') === 'yes' ? TRUE : FALSE;
     $yOffset = Settings::getOption('trusted_shops/yOffset') ?? '0';
     $variant = Settings::getOption('trusted_shops/variant') ?? 'custom';
     ?>
@@ -214,8 +214,7 @@ EOD;
           'trustcardDirection': 'topRight',
           'customBadgeWidth': '40',
           'customBadgeHeight': '40',
-          'disableResponsive': '<?= $disable_responsive ?>',
-          'disableTrustbadge': 'false',
+          'disableTrustbadge': '<?= json_encode($disable_all_devices); ?>',
           'customCheckoutElementId': '<?= Plugin::PREFIX . '-trusted-shops-buyer-protection' ?>'
         };
         var _ts = document.createElement('script');
