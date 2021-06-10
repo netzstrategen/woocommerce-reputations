@@ -71,10 +71,10 @@ class Settings extends \WC_Integration {
         'description' => __('The Trusted Shop badge image.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
-      'trusted_shops/disable_responsive' => [
-        'title' => __('Disable responsive', Plugin::L10N),
+      'trusted_shops/disable_all_devices' => [
+        'title' => __('Disable for all devices', Plugin::L10N),
         'type' => 'checkbox',
-        'description' => __('If checked, the Trusted Shops responsive banner will be hidden on mobile devices.', Plugin::L10N),
+        'description' => __('If checked, the Trusted Shops responsive banner will be hidden on all devices.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
       'trusted_shops/display_product_stars' => [
