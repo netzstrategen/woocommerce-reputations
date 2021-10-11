@@ -66,7 +66,7 @@ class TrustedShops {
   public static function woocommerce_single_product_summary() {
     $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
     if ($display_product_stars) {
-      echo '<div id="' . Plugin::PREFIX . '-trusted-shops-product-stars"></div>';
+      echo '<a href="#' . Plugin::PREFIX . '-trusted-shops-product-reviews" id="' . Plugin::PREFIX . '-trusted-shops-product-stars"></a>';
     }
   }
 
