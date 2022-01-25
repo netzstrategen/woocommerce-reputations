@@ -323,6 +323,7 @@ EOD;
   public static function renderBadge() {
     $badge = '';
     if (
+      (!is_product()) &&
       (!is_wc_endpoint_url('order-received')) &&
       Settings::getOption('trusted_shops/static_image_active') === 'yes' &&
       $badgeImage = Settings::getOption('trusted_shops/static_image')
