@@ -62,7 +62,7 @@ class Plugin {
     add_action('woocommerce_after_single_product_summary', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product_summary');
     add_action('woocommerce_after_single_product', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product');
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\TrustedShops::woocommerce_thankyou_order_received_text', 100, 2);
-    if (WC_VERSION < '3.3.0') {
+    if (defined('WC_VERSION') && WC_VERSION < '3.3.0') {
       add_action('woocommerce_order_items_table', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
     }
     else {
