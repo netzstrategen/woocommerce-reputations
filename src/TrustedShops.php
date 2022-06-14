@@ -186,7 +186,7 @@ EOD;
   public static function wp_footer() {
     global $product, $wpdb;
 
-    if (!$product || !$shop_id = Settings::getOption('trusted_shops/id')) {
+    if ((is_product() && !$product) || !$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
     }
 
