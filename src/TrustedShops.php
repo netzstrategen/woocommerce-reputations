@@ -240,12 +240,14 @@ EOD;
       // Avoid WC_Product_Variable::get_available_variations() as it
       // additionally produces a lot of output for templates, unnecessary here.
       $variation_ids = $product->get_visible_children();
-      $placeholders = implode(',', array_fill(0, count($variation_ids), '%d'));
-      $products_sku = $wpdb->get_col($wpdb->prepare("
-        SELECT pm.meta_value AS sku
-        FROM wp_postmeta pm
-        WHERE pm.post_id IN ($placeholders) AND pm.meta_key = '_sku'
-      ", $variation_ids));
+      if ($variation_ids) {
+        $placeholders = implode(',', array_fill(0, count($variation_ids), '%d'));
+        $products_sku = $wpdb->get_col($wpdb->prepare("
+          SELECT pm.meta_value AS sku
+          FROM wp_postmeta pm
+          WHERE pm.post_id IN ($placeholders) AND pm.meta_key = '_sku'
+        ", $variation_ids));
+      }
     }
     else {
       $products_sku[] = $product->get_sku() ?? '';
