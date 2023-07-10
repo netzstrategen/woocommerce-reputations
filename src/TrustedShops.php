@@ -31,7 +31,7 @@ class TrustedShops {
    * We are adding a "Former SKUs" to ensure TrustedShop retrieves all
    * available product reviews.
    *
-   * @implements woocommerce_product_options_sku
+   * @uses woocommerce_product_options_sku
    */
   public static function woocommerce_product_options_sku() {
     woocommerce_wp_text_input([
@@ -45,7 +45,7 @@ class TrustedShops {
   /**
    * Saves custom fields for simple products.
    *
-   * @implements woocommerce_process_product_meta
+   * @uses woocommerce_process_product_meta
    */
   public static function woocommerce_process_product_meta($post_id) {
     if (isset($_POST['_' . Plugin::PREFIX . '_former_skus'])) {
@@ -61,7 +61,7 @@ class TrustedShops {
   /**
    * Displays product rating stars after product title on product detail page.
    *
-   * @implements woocommerce_single_product_summary
+   * @uses woocommerce_single_product_summary
    */
   public static function woocommerce_single_product_summary() {
     $display_product_stars = Settings::getOption('trusted_shops/display_product_stars') === 'yes' ? TRUE : FALSE;
@@ -73,7 +73,7 @@ class TrustedShops {
   /**
    * Displays product reviews on product detail page.
    *
-   * @implements woocommerce_after_single_product_summary
+   * @uses woocommerce_after_single_product_summary
    */
   public static function woocommerce_after_single_product_summary () {
     $display_product_reviews = Settings::getOption('trusted_shops/display_product_reviews') === 'yes' ? TRUE : FALSE;
@@ -85,51 +85,20 @@ class TrustedShops {
   /**
    * Adds Trusted Shops rich snippet markup to product pages.
    *
-   * @implements woocommerce_after_single_product
+   * @uses woocommerce_after_single_product
    */
   public static function woocommerce_after_single_product() {
-    $transient_id = Plugin::PREFIX  . 'trustedshops_reviews';
-    if ($transient = get_transient($transient_id)) {
-      echo $transient;
+    $trustedShopsAggregateSchema = self::getTrustedShopAggregateSchema();
+    if(!$trustedShopsAggregateSchema) {
       return;
     }
-    if (!$shop_id = Settings::getOption('trusted_shops/id')) {
-      return;
-    }
-    $api_url = 'http://api.trustedshops.com/rest/public/v2/shops/' . $shop_id . '/quality/reviews.json';
-    $response = wp_remote_get($api_url);
-    if ($response instanceof \WP_Error) {
-      trigger_error($response->get_error_message(), E_USER_WARNING);
-      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
-      return;
-    }
-    elseif (empty($response['body']) || !($response = json_decode($response['body'], TRUE)) || empty($response = $response['response'])) {
-      trigger_error('Unable to retrieve Trusted Shops data', E_USER_WARNING);
-      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
-      return;
-    }
-    $reviewIndicator = $response['data']['shop']['qualityIndicators']['reviewIndicator'];
-    $ts_snippet = [
-      '@context' => 'http://schema.org',
-      '@type' => 'Organization',
-      "@id" => get_home_url() . '/#organization',
-      'name' => $response['data']['shop']['name'],
-      'aggregateRating' => [
-        '@type' => 'AggregateRating',
-        'ratingValue' => $reviewIndicator['overallMark'],
-        'bestRating' => '5.00',
-        'ratingCount' => $reviewIndicator['activeReviewCount'],
-      ],
-    ];
-    $transient = '<script type="application/ld+json">' . json_encode($ts_snippet) . '</script>';
-    echo $transient;
-    set_transient($transient_id, $transient, self::CACHE_DURATION);
+    echo '<script type="application/ld+json">' . $trustedShopsAggregateSchema . '</script>';
   }
 
   /**
    * Adds Trusted Shops integrations HTML output to order confirmation page.
    *
-   * @implements woocommerce_thankyou_order_received_text
+   * @uses woocommerce_thankyou_order_received_text
    */
   public static function woocommerce_thankyou_order_received_text($text, $order) {
     if (empty($order)) {
@@ -181,7 +150,7 @@ EOD;
   /**
    * Adds Trusted Shops Badge script to footer and thank-you page.
    *
-   * @implements wp_footer
+   * @uses wp_footer
    */
   public static function wp_footer() {
     global $product, $wpdb;
@@ -342,10 +311,51 @@ EOD;
   /**
    * Adds trusted-shop-badge to the thank-you page.
    *
-   * @implements woocommerce_order_details_after_order_table_items
+   * @uses woocommerce_order_details_after_order_table_items
    */
   public static function addsTrustedShopsBuyerProtection() {
     echo '<div id="' . Plugin::PREFIX . '-trusted-shops-buyer-protection"></div>';
+  }
+
+  /**
+   * Gets the Trusted Shops aggregate schema.
+   */
+  public static function getTrustedShopAggregateSchema() {
+    $transient_id = Plugin::PREFIX  . 'trustedshops_reviews';
+    if ($transient = get_transient($transient_id)) {
+      return $transient;
+    }
+    if (!$shop_id = Settings::getOption('trusted_shops/id')) {
+      return;
+    }
+    $api_url = 'http://api.trustedshops.com/rest/public/v2/shops/' . $shop_id . '/quality/reviews.json';
+    $response = wp_remote_get($api_url);
+    if ($response instanceof \WP_Error) {
+      trigger_error($response->get_error_message(), E_USER_WARNING);
+      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
+      return;
+    }
+    elseif (empty($response['body']) || !($response = json_decode($response['body'], TRUE)) || empty($response = $response['response'])) {
+      trigger_error('Unable to retrieve Trusted Shops data', E_USER_WARNING);
+      set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
+      return;
+    }
+    $reviewIndicator = $response['data']['shop']['qualityIndicators']['reviewIndicator'];
+    $ts_snippet = [
+      '@context' => 'http://schema.org',
+      '@type' => 'Organization',
+      "@id" => get_home_url() . '/#organization',
+      'name' => $response['data']['shop']['name'],
+      'aggregateRating' => [
+        '@type' => 'AggregateRating',
+        'ratingValue' => $reviewIndicator['overallMark'],
+        'bestRating' => '5.00',
+        'ratingCount' => $reviewIndicator['activeReviewCount'],
+      ],
+    ];
+    $transient = json_encode($ts_snippet);
+    set_transient($transient_id, $transient, self::CACHE_DURATION);
+    return $transient;
   }
 
 }

@@ -72,6 +72,8 @@ class Plugin {
     add_action(Plugin::PREFIX . '/badge/trusted-shops', __NAMESPACE__ . '\TrustedShops::renderBadge');
 
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\GoogleTrustedStores::woocommerce_thankyou_order_received_text', 100, 2);
+    // Adds Trusted Shops aggregate schema to GraphQL.
+    add_action('graphql_register_types',  __NAMESPACE__ . '\GraphQL::graphql_register_types');
   }
 
   /**
