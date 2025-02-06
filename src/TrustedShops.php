@@ -367,7 +367,7 @@ EOD;
     if (is_cart()) {
       $widget_id = Settings::getOption('cart_banner/widget_id');
       if ($widget_id) {
-        echo '<etrusted-widget style="display: block; max-width: 700px" data-etrusted-widget-id="'. esc_attr($widget_id) . '"></etrusted-widget>';
+        echo '<etrusted-widget style="display: block; margin: 0 0 0 auto; max-width: 430px" data-etrusted-widget-id="'. esc_attr($widget_id) . '"></etrusted-widget>';
       }
     }
   }
