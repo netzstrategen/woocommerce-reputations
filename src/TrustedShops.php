@@ -358,4 +358,18 @@ EOD;
     return $transient;
   }
 
+  /**
+   * Displays the eTrusted widget on the cart page.
+   *
+   * @uses woocommerce_before_proceed_to_checkout
+   */
+  public static function displayETrustedWidget() {
+    if (is_cart()) {
+      $widget_id = Settings::getOption('cart_banner/widget_id');
+      if ($widget_id) {
+        echo '<etrusted-widget style="display: block; margin: 0 0 0 auto; max-width: 430px" data-etrusted-widget-id="'. esc_attr($widget_id) . '"></etrusted-widget>';
+      }
+    }
+  }
+
 }

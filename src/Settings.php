@@ -119,6 +119,12 @@ class Settings extends \WC_Integration {
         'description' => __('The delivery time will be added to the order date to calculate the estimated delivery data needed for Google Trusted Stores integrations.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'cart_banner/widget_id' => [
+        'title' => __('Cart Banner Widget ID', Plugin::L10N),
+        'type' => 'text',
+        'description' => __('The widget ID for the cart banner.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
     ];
   }
 

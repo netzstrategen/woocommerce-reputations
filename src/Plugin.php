@@ -62,6 +62,8 @@ class Plugin {
     add_action('woocommerce_after_single_product_summary', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product_summary');
     add_action('woocommerce_after_single_product', __NAMESPACE__ . '\TrustedShops::woocommerce_after_single_product');
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\TrustedShops::woocommerce_thankyou_order_received_text', 100, 2);
+    // Shows etrusted Shop widget in cart page
+    add_action('woocommerce_before_proceed_to_checkout', __NAMESPACE__ . '\TrustedShops::displayETrustedWidget');
     if (defined('WC_VERSION') && WC_VERSION < '3.3.0') {
       add_action('woocommerce_order_items_table', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
     }
@@ -86,6 +88,19 @@ class Plugin {
 
     if (is_product()) {
       wp_enqueue_script(static::PREFIX, Plugin::getBaseUrl() . '/dist/scripts/main.min.js', ['jquery'], $git_version, TRUE);
+    }
+
+    if (is_cart()) {
+      wp_enqueue_script(
+        'etrusted-widget',
+        'https://integrations.etrusted.com/applications/widget.js/v2',
+        [],
+        null,
+        [
+          "in_footer" => true,
+          "strategy" => "defer"
+        ]
+      );
     }
   }
 
