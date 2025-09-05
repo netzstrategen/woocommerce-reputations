@@ -51,6 +51,7 @@ class Plugin {
    */
   public static function init() {
     // Add rewrite rule for trusted-shop-reviews endpoint
+    add_rewrite_rule('^reviews/trusted-shop/?$', 'index.php?trusted_shop_reviews=1', 'top');
     add_filter('query_vars', __CLASS__ . '::add_query_vars');
     add_action('template_redirect', __CLASS__ . '::handle_trusted_shop_reviews_template');
 
