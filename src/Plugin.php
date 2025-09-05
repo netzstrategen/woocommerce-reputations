@@ -50,6 +50,10 @@ class Plugin {
    * @implements init
    */
   public static function init() {
+    // Add rewrite rule for trusted-shop-reviews endpoint
+    add_filter('query_vars', __CLASS__ . '::add_query_vars');
+    add_action('template_redirect', __CLASS__ . '::handle_trusted_shop_reviews_template');
+
     // Saves custom fields for simple products.
     add_action('woocommerce_process_product_meta', __NAMESPACE__ . '\TrustedShops::woocommerce_process_product_meta');
 
@@ -153,6 +157,31 @@ class Plugin {
    */
   public static function getBasePath() {
     return dirname(__DIR__);
+  }
+
+  /**
+   * Add query vars for trusted-shop-reviews endpoint.
+   *
+   * @param array $vars
+   * @return array
+   */
+  public static function add_query_vars($vars) {
+    $vars[] = 'trusted_shop_reviews';
+    return $vars;
+  }
+
+  /**
+   * Handle the trusted-shop-reviews template.
+   */
+  public static function handle_trusted_shop_reviews_template() {
+    if (get_query_var('trusted_shop_reviews')) {
+      // Load the template file
+      $template_path = self::getBasePath() . '/templates/trusted-shop-reviews.php';
+      if (file_exists($template_path)) {
+        include $template_path;
+        exit;
+      }
+    }
   }
 
 }
