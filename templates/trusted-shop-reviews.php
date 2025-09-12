@@ -16,12 +16,23 @@ $buyer_email = isset($_GET['buyer_email']) ? sanitize_email($_GET['buyer_email']
 $order_amount = isset($_GET['order_amount']) ? sanitize_text_field($_GET['order_amount']) : '';
 $order_currency = isset($_GET['order_currency']) ? sanitize_text_field($_GET['order_currency']) : '';
 $payment_type = isset($_GET['payment_type']) ? sanitize_text_field($_GET['payment_type']) : '';
-$product_url = isset($_GET['product_url']) ? esc_url_raw($_GET['product_url']) : '';
-$product_image_url = isset($_GET['product_image_url']) ? esc_url_raw($_GET['product_image_url']) : '';
-$product_name = isset($_GET['product_name']) ? sanitize_text_field($_GET['product_name']) : '';
-$product_sku = isset($_GET['product_sku']) ? sanitize_text_field($_GET['product_sku']) : '';
-$product_gtin = isset($_GET['product_gtin']) ? sanitize_text_field($_GET['product_gtin']) : '';
-$product_brand = isset($_GET['product_brand']) ? sanitize_text_field($_GET['product_brand']) : '';
+
+
+// Example: products[0][name]=Product1&products[0][sku]=SKU1&products[1][name]=Product2
+$products = [];
+
+if (isset($_GET['products']) && is_array($_GET['products'])) {
+  foreach ($_GET['products'] as $product_data) {
+    $products[] = [
+      'url' => isset($product_data['url']) ? esc_url_raw($product_data['url']) : '',
+      'image_url' => isset($product_data['image_url']) ? esc_url_raw($product_data['image_url']) : '',
+      'name' => isset($product_data['name']) ? sanitize_text_field($product_data['name']) : '',
+      'sku' => isset($product_data['sku']) ? sanitize_text_field($product_data['sku']) : '',
+      'gtin' => isset($product_data['gtin']) ? sanitize_text_field($product_data['gtin']) : '',
+      'brand' => isset($product_data['brand']) ? sanitize_text_field($product_data['brand']) : '',
+    ];
+  }
+}
 
 ?>
 <!DOCTYPE html>
@@ -71,20 +82,22 @@ $product_brand = isset($_GET['product_brand']) ? sanitize_text_field($_GET['prod
             <span id="tsCheckoutOrderAmount"><?php echo esc_html($order_amount); ?></span>
             <span id="tsCheckoutOrderCurrency"><?php echo esc_html($order_currency); ?></span>
             <span id="tsCheckoutOrderPaymentType"><?php echo esc_html($payment_type); ?></span>
-            <?php if ($product_url || $product_name || $product_sku || $product_gtin): ?>
-            <span class="tsCheckoutProductItem">
-                <span class="tsCheckoutProductUrl"><?php echo esc_html($product_url); ?></span>
-                <span class="tsCheckoutProductImageUrl"><?php echo esc_html($product_image_url); ?></span>
-                <span class="tsCheckoutProductName"><?php echo esc_html($product_name); ?></span>
-                <span class="tsCheckoutProductSKU"><?php echo esc_html($product_sku); ?></span>
-                <span class="tsCheckoutProductGTIN"><?php echo esc_html($product_gtin); ?></span>
-                <span class="tsCheckoutProductBrand"><?php echo esc_html($product_brand); ?></span>
-            </span>
+            <?php if (!empty($products)): ?>
+                <?php foreach ($products as $product): ?>
+                <span class="tsCheckoutProductItem">
+                    <span class="tsCheckoutProductUrl"><?php echo esc_html($product['url']); ?></span>
+                    <span class="tsCheckoutProductImageUrl"><?php echo esc_html($product['image_url']); ?></span>
+                    <span class="tsCheckoutProductName"><?php echo esc_html($product['name']); ?></span>
+                    <span class="tsCheckoutProductSKU"><?php echo esc_html($product['sku']); ?></span>
+                    <span class="tsCheckoutProductGTIN"><?php echo esc_html($product['gtin']); ?></span>
+                    <span class="tsCheckoutProductBrand"><?php echo esc_html($product['brand']); ?></span>
+                </span>
+                <?php endforeach; ?>
             <?php endif; ?>
         </div>
     </div>
 
-    <?php 
+    <?php
     $trusted_shops_id = Settings::getOption('trusted_shops/id');
     if ($trusted_shops_id):
     ?>
