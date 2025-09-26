@@ -10,6 +10,37 @@ if (!defined('ABSPATH')) {
   exit;
 }
 
+// Security validation - Check for access token
+function validate_trusted_shop_access() {
+    // Get the expected token from wp-config.php
+    $expected_token = defined('WOOCOMMERCE_REPUTATIONS_ACCESS_TOKEN')
+        ? WOOCOMMERCE_REPUTATIONS_ACCESS_TOKEN 
+        : null;
+    if (empty($expected_token)) {
+        return false;
+    }
+
+    // Check for X-Access-Token header
+    $provided_token = isset($_SERVER['HTTP_X_ACCESS_TOKEN']) ? $_SERVER['HTTP_X_ACCESS_TOKEN'] : null;
+
+    if (empty($provided_token)) {
+        return false;
+    }
+
+    // Use hash_equals for timing-safe comparison
+    return hash_equals($expected_token, $provided_token);
+}
+
+
+
+// Validate access token before proceeding
+if (!validate_trusted_shop_access()) {
+    status_header(403);
+    echo 'Access Denied';
+    exit;
+}
+
+
 // Get parameters from URL
 $order_nr = isset($_GET['order_nr']) ? sanitize_text_field($_GET['order_nr']) : '';
 $buyer_email = isset($_GET['buyer_email']) ? sanitize_email($_GET['buyer_email']) : '';
