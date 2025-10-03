@@ -20,8 +20,8 @@ function validate_trusted_shop_access() {
         return false;
     }
 
-    // Check for X-Access-Token header
-    $provided_token = isset($_SERVER['HTTP_X_ACCESS_TOKEN']) ? $_SERVER['HTTP_X_ACCESS_TOKEN'] : null;
+    // Check for X-Trusted-Shop header
+    $provided_token = isset($_SERVER['HTTP_X_TRUSTED_SHOP']) ? $_SERVER['HTTP_X_TRUSTED_SHOP'] : null;
 
     if (empty($provided_token)) {
         return false;
