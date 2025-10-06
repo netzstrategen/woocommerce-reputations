@@ -13,15 +13,16 @@ if (!defined('ABSPATH')) {
 // Security validation - Check for access token
 function validate_trusted_shop_access() {
     // Get the expected token from wp-config.php
-    $expected_token = defined('WOOCOMMERCE_REPUTATIONS_ACCESS_TOKEN')
+    $expected_token = defined('WOOCOMMERCE_REPUTATIONS_ACCESS_TOKEN') 
         ? WOOCOMMERCE_REPUTATIONS_ACCESS_TOKEN 
         : null;
+
     if (empty($expected_token)) {
         return false;
     }
 
-    // Check for X-Trusted-Shop header
-    $provided_token = isset($_SERVER['HTTP_X_TRUSTED_SHOP']) ? $_SERVER['HTTP_X_TRUSTED_SHOP'] : null;
+    // Check for access_token in query parameters
+    $provided_token = isset($_GET['access_token']) ? sanitize_text_field($_GET['access_token']) : null;
 
     if (empty($provided_token)) {
         return false;
