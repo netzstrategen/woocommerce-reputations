@@ -118,7 +118,7 @@ if (isset($_GET['products']) && is_array($_GET['products'])) {
                 <?php foreach ($products as $product): ?>
                 <span class="tsCheckoutProductItem">
                     <span class="tsCheckoutProductUrl"><?php echo esc_html($product['url']); ?></span>
-                    <span class="tsCheckoutProductImageUrl"><?php echo esc_html($product['image_url']); ?></span>
+                    <span class="tsCheckoutProductImageUrl"><?php echo esc_url($product['image_url']); ?></span>
                     <span class="tsCheckoutProductName"><?php echo esc_html($product['name']); ?></span>
                     <span class="tsCheckoutProductSKU"><?php echo esc_html($product['sku']); ?></span>
                     <span class="tsCheckoutProductGTIN"><?php echo esc_html($product['gtin']); ?></span>
