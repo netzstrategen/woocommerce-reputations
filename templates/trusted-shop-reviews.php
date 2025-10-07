@@ -136,7 +136,7 @@ if (isset($_GET['products']) && is_array($_GET['products'])) {
     <script>
     (function () {
       var _tsid = '<?php echo esc_js($trusted_shops_id); ?>';
-      _tsConfig = {
+      var _tsConfig = {
         'yOffset': '-40',
         'variant': 'custom',
         'customElementId': 'woocommerce-reputations-trusted-shops-badge',
