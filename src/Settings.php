@@ -125,6 +125,12 @@ class Settings extends \WC_Integration {
         'description' => __('The widget ID for the cart banner.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'trusted_shops/review_widget_logo' => [
+        'title' => __('Review Widget Logo URL', Plugin::L10N),
+        'type' => 'text',
+        'description' => __('The logo URL to display in the review widget on the thank you page.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
     ];
   }
 
