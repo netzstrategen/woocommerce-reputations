@@ -393,7 +393,6 @@ EOD;
     }
 
     $logo_url = Settings::getOption('trusted_shops/review_widget_logo');
-    $button_color = Settings::getOption('trusted_shops/product_review_box_backgroundcolor') ?? '#4a7c59';
     $shop_name = get_bloginfo('name');
 
     // Build the review URL with encoded buyer email and order ID
@@ -426,7 +425,9 @@ EOD;
       </h3>
 
       <div class="woocommerce-reputations-review-widget__stars">
-        <span>★★★★★</span>
+        <a href="<?php echo esc_url($review_url); ?>" target="_blank" rel="noopener noreferrer">
+          <span>★★★★★</span>
+        </a>
       </div>
 
       <p class="woocommerce-reputations-review-widget__text">
@@ -450,7 +451,7 @@ EOD;
    * Outputs the CSS styles for the review widget and trusted shops widgets.
    */
   public static function render_review_widget_styles(): void {
-    $button_color = Settings::getOption('trusted_shops/product_review_box_backgroundcolor') ?? '#4a7c59';
+    $primary_color = Settings::getOption('trusted_shops/review_widget_primary_color') ?? '#4a7c59';
     ?>
     <style>
       .woocommerce-reputations-trusted-shops-widgets {
@@ -460,14 +461,21 @@ EOD;
         margin: 20px 0;
       }
       .woocommerce-reputations-review-widget {
-        max-width: 400px;
-        border-top: 4px solid <?php echo esc_attr($button_color); ?>;
+        width: 474px;
+        max-width: 100%;
+        border-top: 4px solid <?php echo esc_attr($primary_color); ?>;
         border-radius: 4px;
         padding: 24px;
         margin: 20px 0;
         background: #fff;
         font-family: Arial, sans-serif;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+      }
+      @media (max-width: 648px) {
+        .woocommerce-reputations-review-widget {
+          width: 308px;
+        }
       }
       .woocommerce-reputations-review-widget__logo {
         text-align: center;
@@ -506,7 +514,7 @@ EOD;
       }
       .woocommerce-reputations-review-widget__button {
         display: inline-block;
-        background-color: <?php echo esc_attr($button_color); ?>;
+        background-color: <?php echo esc_attr($primary_color); ?>;
         color: #fff;
         padding: 12px 32px;
         text-decoration: none;
