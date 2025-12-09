@@ -69,12 +69,8 @@ class Plugin {
     add_filter('woocommerce_thankyou_order_received_text', __NAMESPACE__ . '\TrustedShops::woocommerce_thankyou_order_received_text', 100, 2);
     // Shows etrusted Shop widget in cart page
     add_action('woocommerce_before_proceed_to_checkout', __NAMESPACE__ . '\TrustedShops::displayETrustedWidget');
-    if (defined('WC_VERSION') && WC_VERSION < '3.3.0') {
-      add_action('woocommerce_order_items_table', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
-    }
-    else {
-      add_action('woocommerce_order_details_after_order_table_items', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
-    }
+    // Display Trusted Shops widgets before order details table
+    add_action('woocommerce_order_details_before_order_table', __NAMESPACE__ . '\TrustedShops::addsTrustedShopsBuyerProtection');
     add_action('wp_footer', __NAMESPACE__ . '\TrustedShops::wp_footer');
     add_action(Plugin::PREFIX . '/badge/trusted-shops', __NAMESPACE__ . '\TrustedShops::renderBadge');
 

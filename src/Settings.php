@@ -125,6 +125,18 @@ class Settings extends \WC_Integration {
         'description' => __('The widget ID for the cart banner.', Plugin::L10N),
         'desc_tip' => TRUE,
       ],
+      'trusted_shops/review_widget_logo' => [
+        'title' => __('Review Widget Logo URL', Plugin::L10N),
+        'type' => 'text',
+        'description' => __('The logo URL to display in the review widget on the thank you page.', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
+      'trusted_shops/review_widget_primary_color' => [
+        'title' => __('Review Widget Primary Color', Plugin::L10N),
+        'type' => 'color',
+        'description' => __('The primary color for the review widget (border and button).', Plugin::L10N),
+        'desc_tip' => TRUE,
+      ],
     ];
   }
 

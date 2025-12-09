@@ -311,10 +311,18 @@ EOD;
   /**
    * Adds trusted-shop-badge to the thank-you page.
    *
-   * @uses woocommerce_order_details_after_order_table_items
+   * @uses woocommerce_order_details_before_order_table
    */
-  public static function addsTrustedShopsBuyerProtection() {
-    echo '<div id="' . Plugin::PREFIX . '-trusted-shops-buyer-protection"></div>';
+  public static function addsTrustedShopsBuyerProtection($order = null) {
+    static::render_review_widget_styles();
+    ?>
+    <div class="<?php echo esc_attr(Plugin::PREFIX); ?>-trusted-shops-widgets">
+      <?php if ($order instanceof \WC_Order): ?>
+        <?php echo static::render_review_widget($order); ?>
+      <?php endif; ?>
+      <div id="<?php echo esc_attr(Plugin::PREFIX); ?>-trusted-shops-buyer-protection"></div>
+    </div>
+    <?php
   }
 
   /**
@@ -370,6 +378,156 @@ EOD;
         echo '<etrusted-widget style="display: block; margin: 0 0 0 auto; max-width: 430px" data-etrusted-widget-id="'. esc_attr($widget_id) . '"></etrusted-widget>';
       }
     }
+  }
+
+    /**
+   * Renders the review widget card for the thank you page.
+   *
+   * @param \WC_Order $order The WooCommerce order object.
+   * @return string The HTML markup for the review widget.
+   */
+  public static function render_review_widget($order): string {
+    $shop_id = Settings::getOption('trusted_shops/id');
+    if (empty($shop_id)) {
+      return '';
+    }
+
+    $logo_url = Settings::getOption('trusted_shops/review_widget_logo');
+    $shop_name = get_bloginfo('name');
+
+    // Build the review URL with encoded buyer email and order ID
+    $buyer_email = $order->get_billing_email();
+    $order_id = $order->get_id();
+
+    // Use custom order number if available
+    if (class_exists('Alg_WC_Custom_Order_Numbers_Core')) {
+      $order_id = get_post_meta($order->get_id(), '_alg_wc_custom_order_number', TRUE) ?: $order->get_id();
+    }
+
+    $review_url = sprintf(
+      'https://www.trustedshops.de/bewertung/bewerten_%s.html&buyerEmail=%s&shopOrderID=%s',
+      esc_attr($shop_id),
+      urlencode(base64_encode($buyer_email)),
+      urlencode(base64_encode($order_id))
+    );
+
+    ob_start();
+    ?>
+    <div class="woocommerce-reputations-review-widget">
+      <?php if ($logo_url): ?>
+      <div class="woocommerce-reputations-review-widget__logo">
+        <img src="<?php echo esc_url($logo_url); ?>" alt="<?php echo esc_attr($shop_name); ?>">
+      </div>
+      <?php endif; ?>
+
+      <h3 class="woocommerce-reputations-review-widget__title">
+        <?php esc_html_e('Bitte bewerten Sie Ihr Einkaufserlebnis:', Plugin::L10N); ?>
+      </h3>
+
+      <div class="woocommerce-reputations-review-widget__stars">
+        <a href="<?php echo esc_url($review_url); ?>" target="_blank" rel="noopener noreferrer">
+          <span>★★★★★</span>
+        </a>
+      </div>
+
+      <p class="woocommerce-reputations-review-widget__text">
+        <?php esc_html_e('Wir leiten Sie für Ihre Bewertung zu Trusted Shops weiter.', Plugin::L10N); ?>
+      </p>
+
+      <div class="woocommerce-reputations-review-widget__button-wrap">
+        <a href="<?php echo esc_url($review_url); ?>"
+           target="_blank"
+           rel="noopener noreferrer"
+           class="woocommerce-reputations-review-widget__button">
+          <?php esc_html_e('Jetzt bewerten', Plugin::L10N); ?>
+        </a>
+      </div>
+    </div>
+    <?php
+    return ob_get_clean();
+  }
+
+  /**
+   * Outputs the CSS styles for the review widget and trusted shops widgets.
+   */
+  public static function render_review_widget_styles(): void {
+    $primary_color = Settings::getOption('trusted_shops/review_widget_primary_color') ?? '#4a7c59';
+    ?>
+    <style>
+      .woocommerce-reputations-trusted-shops-widgets {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin: 20px 0;
+      }
+      .woocommerce-reputations-review-widget {
+        width: 474px;
+        max-width: 100%;
+        border-top: 4px solid <?php echo esc_attr($primary_color); ?>;
+        border-radius: 4px;
+        padding: 24px;
+        margin: 20px 0;
+        background: #fff;
+        font-family: Arial, sans-serif;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        box-sizing: border-box;
+      }
+      @media (max-width: 648px) {
+        .woocommerce-reputations-review-widget {
+          width: 308px;
+        }
+      }
+      .woocommerce-reputations-review-widget__logo {
+        text-align: center;
+        margin-bottom: 16px;
+        display: flex;
+        justify-content: center;
+      }
+      .woocommerce-reputations-review-widget__logo img {
+        max-width: 200px;
+        height: auto;
+      }
+      .woocommerce-reputations-review-widget__title {
+        text-align: center;
+        color: #000;
+        margin: 0 0 12px 0;
+        font-size: 18px;
+        font-weight: bold;
+      }
+      .woocommerce-reputations-review-widget__stars {
+        text-align: center;
+        margin-bottom: 16px;
+      }
+      .woocommerce-reputations-review-widget__stars span {
+        font-size: 32px;
+        color: #ccc;
+        letter-spacing: 4px;
+      }
+      .woocommerce-reputations-review-widget__text {
+        text-align: center;
+        color: #666;
+        font-size: 14px;
+        margin: 0 0 20px 0;
+      }
+      .woocommerce-reputations-review-widget__button-wrap {
+        text-align: center;
+      }
+      .woocommerce-reputations-review-widget__button {
+        display: inline-block;
+        background-color: <?php echo esc_attr($primary_color); ?>;
+        color: #fff;
+        padding: 12px 32px;
+        text-decoration: none;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 16px;
+      }
+      .woocommerce-reputations-review-widget__button:hover {
+        opacity: 0.9;
+        color: #fff;
+      }
+    </style>
+    <?php
   }
 
 }
