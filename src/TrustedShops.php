@@ -330,14 +330,20 @@ EOD;
    */
   public static function getTrustedShopAggregateSchema() {
     $transient_id = Plugin::PREFIX  . 'trustedshops_reviews';
-    if ($transient = get_transient($transient_id)) {
-      return $transient;
+    $transient = get_transient($transient_id);
+    // `''` is the negative cache written after a failed fetch; a loose check
+    // reads it as a miss, so every request re-hits the API.
+    if (FALSE !== $transient) {
+      return $transient ?: NULL;
     }
     if (!$shop_id = Settings::getOption('trusted_shops/id')) {
       return;
     }
-    $api_url = 'http://api.trustedshops.com/rest/public/v2/shops/' . $shop_id . '/quality/reviews.json';
-    $response = wp_remote_get($api_url);
+    // The `.json` suffix used to select the format but now 404s; the API
+    // defaults to XML, so the format has to be negotiated via Accept.
+    // Legacy API — developers.etrusted.com is the sanctioned replacement.
+    $api_url = 'https://api.trustedshops.com/rest/public/v2/shops/' . $shop_id . '/quality/reviews';
+    $response = wp_remote_get($api_url, ['headers' => ['Accept' => 'application/json']]);
     if ($response instanceof \WP_Error) {
       trigger_error($response->get_error_message(), E_USER_WARNING);
       set_transient($transient_id, '', static::CACHE_DURATION_ERROR);
