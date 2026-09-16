@@ -111,20 +111,32 @@ class Plugin {
    * @return string
    */
   public static function getGitVersion() {
-    $git_version = NULL;
-    if (is_dir(ABSPATH . '.git')) {
-      $ref = trim(file_get_contents(ABSPATH . '.git/HEAD'));
-      if (strpos($ref, 'ref:') === 0) {
-        $ref = substr($ref, 5);
-        if (file_exists(ABSPATH . '.git/' . $ref)) {
-          $ref = trim(file_get_contents(ABSPATH . '.git/' . $ref));
-        }
-        else {
-          $ref = substr($ref, 11);
-        }
-      }
-      $git_version = substr($ref, 0, 8);
+    static $git_version;
+    if (isset($git_version)) {
+      return $git_version;
     }
+
+    $git_version = NULL;
+    // The repository root is above ABSPATH in a Bedrock layout, where ABSPATH
+    // is web/wp/, so walk up rather than assume .git sits next to it.
+    $directory = ABSPATH;
+    for ($level = 0; $level < 4 && $directory && $directory !== '/'; $level++) {
+      if (is_dir($directory . '.git')) {
+        $head = @file_get_contents($directory . '.git/HEAD');
+        if ($head !== FALSE) {
+          $ref = trim($head);
+          if (strpos($ref, 'ref:') === 0) {
+            $ref = trim(substr($ref, 5));
+            $resolved = @file_get_contents($directory . '.git/' . $ref);
+            $ref = $resolved !== FALSE ? trim($resolved) : substr($ref, 11);
+          }
+          $git_version = substr($ref, 0, 8);
+        }
+        break;
+      }
+      $directory = trailingslashit(dirname(untrailingslashit($directory)));
+    }
+
     return $git_version;
   }
 
